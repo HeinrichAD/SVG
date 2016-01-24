@@ -59,7 +59,7 @@
     <Compile Include="MarkerEndTest.cs" />
     <Compile Include="MetafileRenderingTest.cs" />
     <Compile Include="MultiThreadingTest.cs" />
-    <Compile Include="PdfPrintTest.cs" />
+    <Compile Include="PrinterGraphicRenderingTest.cs" />
     <Compile Include="PrivateFontsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SvgTestHelper.cs" />
