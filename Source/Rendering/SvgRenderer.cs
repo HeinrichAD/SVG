@@ -11,7 +11,7 @@ namespace Svg
     /// <summary>
     /// Convenience wrapper around a graphics object
     /// </summary>
-    public sealed class SvgRenderer : IDisposable, IGraphicsProvider, ISvgRenderer
+    public class SvgRenderer : IDisposable, IGraphicsProvider, ISvgRenderer
     {
         private Graphics _innerGraphics;
         private Stack<ISvgBoundable> _boundables = new Stack<ISvgBoundable>();
@@ -37,7 +37,7 @@ namespace Svg
         /// <summary>
         /// Initializes a new instance of the <see cref="ISvgRenderer"/> class.
         /// </summary>
-        private SvgRenderer(Graphics graphics)
+        protected SvgRenderer(Graphics graphics)
         {
             this._innerGraphics = graphics;
         }
