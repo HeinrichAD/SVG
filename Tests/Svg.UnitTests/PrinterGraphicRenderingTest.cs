@@ -69,7 +69,7 @@ namespace Svg.UnitTests
 
 
             private float dpiY;
-            public new float DpiY
+            public override float DpiY
             {
                 get { return dpiY; }
             }

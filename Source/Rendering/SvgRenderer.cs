@@ -13,25 +13,25 @@ namespace Svg
     /// </summary>
     public class SvgRenderer : IDisposable, IGraphicsProvider, ISvgRenderer
     {
-        private Graphics _innerGraphics;
-        private Stack<ISvgBoundable> _boundables = new Stack<ISvgBoundable>();
+        protected virtual Graphics InnerGraphics { get; set; }
+        protected virtual Stack<ISvgBoundable> Boundables { get; set; }
 
-        public void SetBoundable(ISvgBoundable boundable)
+        public virtual void SetBoundable(ISvgBoundable boundable)
         {
-            _boundables.Push(boundable);
+            Boundables.Push(boundable);
         }
-        public ISvgBoundable GetBoundable()
+        public virtual ISvgBoundable GetBoundable()
         {
-            return _boundables.Peek();
+            return Boundables.Peek();
         }
-        public ISvgBoundable PopBoundable()
+        public virtual ISvgBoundable PopBoundable()
         {
-            return _boundables.Pop();
+            return Boundables.Pop();
         }
 
-        public float DpiY
+        public virtual float DpiY
         {
-            get { return _innerGraphics.DpiY; }
+            get { return InnerGraphics.DpiY; }
         }
 
         /// <summary>
@@ -39,72 +39,73 @@ namespace Svg
         /// </summary>
         protected SvgRenderer(Graphics graphics)
         {
-            this._innerGraphics = graphics;
+            this.Boundables = new Stack<ISvgBoundable>();
+            this.InnerGraphics = graphics;
         }
 
-        public void DrawImage(Image image, RectangleF destRect, RectangleF srcRect, GraphicsUnit graphicsUnit)
+        public virtual void DrawImage(Image image, RectangleF destRect, RectangleF srcRect, GraphicsUnit graphicsUnit)
         {
-            _innerGraphics.DrawImage(image, destRect, srcRect, graphicsUnit);
+            InnerGraphics.DrawImage(image, destRect, srcRect, graphicsUnit);
         }
-        public void DrawImageUnscaled(Image image, Point location)
+        public virtual void DrawImageUnscaled(Image image, Point location)
         {
-            this._innerGraphics.DrawImageUnscaled(image, location);
+            this.InnerGraphics.DrawImageUnscaled(image, location);
         }
-        public void DrawPath(Pen pen, GraphicsPath path)
+        public virtual void DrawPath(Pen pen, GraphicsPath path)
         {
-            this._innerGraphics.DrawPath(pen, path);
+            this.InnerGraphics.DrawPath(pen, path);
         }
-        public void FillPath(Brush brush, GraphicsPath path)
+        public virtual void FillPath(Brush brush, GraphicsPath path)
         {
-            this._innerGraphics.FillPath(brush, path);
+            this.InnerGraphics.FillPath(brush, path);
         }
-        public Region GetClip()
+        public virtual Region GetClip()
         {
-            return this._innerGraphics.Clip;
+            return this.InnerGraphics.Clip;
         }
-        public void RotateTransform(float fAngle, MatrixOrder order = MatrixOrder.Append)
+        public virtual void RotateTransform(float fAngle, MatrixOrder order = MatrixOrder.Append)
         {
-            this._innerGraphics.RotateTransform(fAngle, order);
+            this.InnerGraphics.RotateTransform(fAngle, order);
         }
-        public void ScaleTransform(float sx, float sy, MatrixOrder order = MatrixOrder.Append)
+        public virtual void ScaleTransform(float sx, float sy, MatrixOrder order = MatrixOrder.Append)
         {
-            this._innerGraphics.ScaleTransform(sx, sy, order);
+            this.InnerGraphics.ScaleTransform(sx, sy, order);
         }
-        public void SetClip(Region region, CombineMode combineMode = CombineMode.Replace)
+        public virtual void SetClip(Region region, CombineMode combineMode = CombineMode.Replace)
         {
-            this._innerGraphics.SetClip(region, combineMode);
+            this.InnerGraphics.SetClip(region, combineMode);
         }
-        public void TranslateTransform(float dx, float dy, MatrixOrder order = MatrixOrder.Append)
+        public virtual void TranslateTransform(float dx, float dy, MatrixOrder order = MatrixOrder.Append)
         {
-            this._innerGraphics.TranslateTransform(dx, dy, order);
-        }
-        
-        public CompositingMode CompositingMode
-        {
-          get { return this._innerGraphics.CompositingMode; }
-          set { this._innerGraphics.CompositingMode = value; }
+            this.InnerGraphics.TranslateTransform(dx, dy, order);
         }
 
-        public SmoothingMode SmoothingMode
+        public virtual CompositingMode CompositingMode
         {
-            get { return this._innerGraphics.SmoothingMode; }
-            set { this._innerGraphics.SmoothingMode = value; }
+          get { return this.InnerGraphics.CompositingMode; }
+          set { this.InnerGraphics.CompositingMode = value; }
         }
 
-        public Matrix Transform
+        public virtual SmoothingMode SmoothingMode
         {
-            get { return this._innerGraphics.Transform; }
-            set { this._innerGraphics.Transform = value; }
+            get { return this.InnerGraphics.SmoothingMode; }
+            set { this.InnerGraphics.SmoothingMode = value; }
         }
 
-        public void Dispose()
+        public virtual Matrix Transform
         {
-            this._innerGraphics.Dispose();
+            get { return this.InnerGraphics.Transform; }
+            set { this.InnerGraphics.Transform = value; }
+        }
+
+        public virtual void Dispose()
+        {
+            this.InnerGraphics.Dispose();
         }
 
         Graphics IGraphicsProvider.GetGraphics()
         {
-            return _innerGraphics;
+            return InnerGraphics;
         }
 
         /// <summary>
